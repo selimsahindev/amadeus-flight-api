@@ -1,17 +1,13 @@
 package com.selimsahin.amadeus.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "airports")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class Airport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

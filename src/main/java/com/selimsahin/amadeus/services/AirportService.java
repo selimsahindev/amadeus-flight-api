@@ -12,12 +12,12 @@ import java.util.Optional;
 public class AirportService {
     private final AirportRepository airportRepository;
 
-    public Iterable<Airport> getAirports() {
-        return airportRepository.findAll();
-    }
-
     public Airport createAirport(Airport airport) {
         return airportRepository.save(airport);
+    }
+
+    public Iterable<Airport> getAirports() {
+        return airportRepository.findAll();
     }
 
     public Airport getAirportById(Long id) {
