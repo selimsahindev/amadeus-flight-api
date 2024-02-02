@@ -12,11 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Flight {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Flight extends BaseModel {
     @ManyToOne
     @JoinColumn(nullable = false, name = "departure_airport_id", referencedColumnName = "id")
     private Airport departureAirport;

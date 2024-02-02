@@ -8,11 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Airport {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Airport extends BaseModel {
     @Column(nullable = false)
     private String city;
 }
