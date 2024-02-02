@@ -19,7 +19,7 @@ public class FlightController {
     }
 
     @GetMapping("/{id}")
-    public Flight getFlightById(Long id) {
+    public Flight getFlightById(@PathVariable Long id) {
         return flightService.getFlightById(id);
     }
 
