@@ -11,16 +11,16 @@ import java.time.LocalDateTime;
 @Setter
 public class FlightCreateDto {
     @Column(nullable = false)
-    private Airport departureAirportId;
+    private Long departureAirportId;
 
     @Column(nullable = false)
-    private Airport arrivalAirportId;
+    private Long arrivalAirportId;
 
     @Column(nullable = false)
     private LocalDateTime departureDateTime;
 
     @Column(nullable = false)
-    private LocalDateTime returnDateTime;
+    private LocalDateTime arrivalDateTime;
 
     @Column(nullable = false)
     private Double price;

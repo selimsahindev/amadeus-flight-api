@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 public class FlightResponseDto {
     private Long id;
 
-    private Airport departureAirportId;
-    private Airport arrivalAirportId;
+    private Long departureAirportId;
+    private Long arrivalAirportId;
     private LocalDateTime departureDateTime;
-    private LocalDateTime returnDateTime;
+    private LocalDateTime arrivalDateTime;
     private Double price;
 
     private LocalDateTime createdAt;
