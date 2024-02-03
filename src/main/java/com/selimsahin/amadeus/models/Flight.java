@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 public class Flight extends BaseModel {
     @ManyToOne
     @JoinColumn(nullable = false, name = "departure_airport_id", referencedColumnName = "id")
-    private Airport departureAirport;
+    private Airport departureAirportId;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "arrival_airport_id", referencedColumnName = "id")
-    private Airport arrivalAirport;
+    private Airport arrivalAirportId;
 
     @Column(nullable = false)
     private LocalDateTime departureDateTime;
