@@ -7,11 +7,8 @@ import com.selimsahin.amadeus.models.Flight;
 import com.selimsahin.amadeus.repositories.FlightRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,9 +24,9 @@ public class FlightService {
     }
 
     public Iterable<FlightResponseDto> getFlights() {
-        List<Flight> flights = flightRepository.findAll();
-
-        return flights.stream()
+        return flightRepository
+                .findAll()
+                .stream()
                 .map(flight -> modelMapper.map(flight, FlightResponseDto.class))
                 .toList();
     }
