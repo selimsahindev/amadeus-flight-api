@@ -1,8 +1,11 @@
 package com.selimsahin.amadeus.services;
 
+import com.selimsahin.amadeus.dtos.AirportCreateDto;
+import com.selimsahin.amadeus.dtos.AirportResponseDto;
 import com.selimsahin.amadeus.models.Airport;
 import com.selimsahin.amadeus.repositories.AirportRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,37 +14,42 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AirportService {
     private final AirportRepository airportRepository;
+    private final ModelMapper modelMapper;
 
-    public Airport createAirport(Airport airport) {
-        return airportRepository.save(airport);
+    public AirportResponseDto createAirport(AirportCreateDto airportCreateDto) {
+        Airport airport = modelMapper.map(airportCreateDto, Airport.class);
+        airport = airportRepository.save(airport);
+        return modelMapper.map(airport, AirportResponseDto.class);
     }
 
-    public Iterable<Airport> getAirports() {
-        return airportRepository.findAll();
+    public Iterable<AirportResponseDto> getAirports() {
+        return airportRepository
+            .findAll()
+            .stream()
+            .map(airport -> modelMapper.map(airport, AirportResponseDto.class))
+            .toList();
     }
 
-    public Airport getAirportById(Long id) {
-        Optional<Airport> foundAirport = airportRepository.findById(id);
-
-        if (foundAirport.isEmpty()) {
-            throw new RuntimeException("Airport not found");
-        }
-
-        return foundAirport.get();
+    public AirportResponseDto getAirportById(Long id) {
+        Airport airport = airportRepository.findById(id).orElseThrow(() -> new RuntimeException("Airport not found"));
+        return modelMapper.map(airport, AirportResponseDto.class);
     }
 
-    public Airport updateAirportById(Long id, Airport airport) {
+    public AirportResponseDto updateAirport(Long id, AirportCreateDto airportCreateDto) {
         Optional<Airport> foundAirport = airportRepository.findById(id);
 
         if (foundAirport.isEmpty()) {
             return null;
         }
 
-        foundAirport.get().setCity(airport.getCity());
-        return airportRepository.save(foundAirport.get());
+        Airport airport = foundAirport.get();
+        airport.setCity(airportCreateDto.getCity());
+        airport = airportRepository.save(airport);
+
+        return modelMapper.map(airport, AirportResponseDto.class);
     }
 
-    public void deleteAirportById(Long id) {
+    public void deleteAirport(Long id) {
         airportRepository.deleteById(id);
     }
 }

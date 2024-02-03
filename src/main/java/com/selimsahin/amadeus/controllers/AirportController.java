@@ -2,96 +2,46 @@ package com.selimsahin.amadeus.controllers;
 
 import com.selimsahin.amadeus.dtos.AirportCreateDto;
 import com.selimsahin.amadeus.dtos.AirportResponseDto;
-import com.selimsahin.amadeus.models.Airport;
-import com.selimsahin.amadeus.repositories.AirportRepository;
-import lombok.RequiredArgsConstructor;
+import com.selimsahin.amadeus.services.AirportService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/airports")
 @RequiredArgsConstructor
 public class AirportController {
-    private final AirportRepository airportRepository;
+    private final AirportService airportService;
+    private final ModelMapper modelMapper;
 
     @GetMapping
     public Iterable<AirportResponseDto> getAirports() {
-        return airportRepository.findAll().stream().map(airport -> {
-            AirportResponseDto airportResponseDto = new AirportResponseDto();
-            airportResponseDto.setId(airport.getId());
-            airportResponseDto.setCity(airport.getCity());
-            airportResponseDto.setCreatedAt(airport.getCreatedAt());
-            airportResponseDto.setUpdatedAt(airport.getUpdatedAt());
-            return airportResponseDto;
-        }).toList();
+        return airportService.getAirports();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AirportResponseDto> getAirport(@PathVariable Long id) {
-        Optional<Airport> airport = airportRepository.findById(id);
-
-        if (airport.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        AirportResponseDto airportResponseDto = new AirportResponseDto();
-        airportResponseDto.setId(airport.get().getId());
-        airportResponseDto.setCity(airport.get().getCity());
-        airportResponseDto.setCreatedAt(airport.get().getCreatedAt());
-        airportResponseDto.setUpdatedAt(airport.get().getUpdatedAt());
-
-        return new ResponseEntity<>(airportResponseDto, HttpStatus.OK);
+        AirportResponseDto foundAirport = airportService.getAirportById(id);
+        return ResponseEntity.ok(foundAirport);
     }
 
     @PostMapping
     public ResponseEntity<AirportResponseDto> createAirport(@RequestBody AirportCreateDto airportCreateDto) {
-        Airport airport = new Airport();
-        airport.setCity(airportCreateDto.getCity());
-        airportRepository.save(airport);
-
-        AirportResponseDto airportResponseDto = new AirportResponseDto();
-        airportResponseDto.setId(airport.getId());
-        airportResponseDto.setCity(airport.getCity());
-        airportResponseDto.setCreatedAt(airport.getCreatedAt());
-        airportResponseDto.setUpdatedAt(airport.getUpdatedAt());
-
-        return new ResponseEntity<>(airportResponseDto, HttpStatus.CREATED);
+        AirportResponseDto createdAirport = airportService.createAirport(airportCreateDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAirport);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AirportResponseDto> updateAirport(@PathVariable Long id, @RequestBody AirportCreateDto airportCreateDto) {
-        Optional<Airport> optionalAirport = airportRepository.findById(id);
-
-        if (optionalAirport.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        Airport airport = optionalAirport.get();
-        airport.setCity(airportCreateDto.getCity());
-        airportRepository.save(airport);
-
-        AirportResponseDto airportResponseDto = new AirportResponseDto();
-        airportResponseDto.setId(airport.getId());
-        airportResponseDto.setCity(airport.getCity());
-        airportResponseDto.setCreatedAt(airport.getCreatedAt());
-        airportResponseDto.setUpdatedAt(airport.getUpdatedAt());
-
-        return new ResponseEntity<>(airportResponseDto, HttpStatus.OK);
+        AirportResponseDto updatedAirport = airportService.updateAirport(id, airportCreateDto);
+        return ResponseEntity.ok(updatedAirport);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteAirport(@PathVariable Long id) {
-        Optional<Airport> optionalAirport = airportRepository.findById(id);
-
-        if (optionalAirport.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        airportRepository.delete(optionalAirport.get());
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        airportService.deleteAirport(id);
+        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
     }
 }
