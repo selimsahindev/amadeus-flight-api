@@ -2,14 +2,11 @@ package com.selimsahin.amadeus.controllers;
 
 import com.selimsahin.amadeus.dtos.FlightCreateDto;
 import com.selimsahin.amadeus.dtos.FlightResponseDto;
-import com.selimsahin.amadeus.models.Flight;
 import com.selimsahin.amadeus.services.FlightService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/flights")
@@ -44,6 +41,6 @@ public class FlightController {
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteFlightById(@PathVariable Long id) {
         flightService.deleteFlight(id);
-        return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }

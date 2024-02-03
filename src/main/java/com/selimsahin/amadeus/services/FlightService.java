@@ -2,12 +2,16 @@ package com.selimsahin.amadeus.services;
 
 import com.selimsahin.amadeus.dtos.FlightCreateDto;
 import com.selimsahin.amadeus.dtos.FlightResponseDto;
+import com.selimsahin.amadeus.exceptions.ResourceNotFoundException;
 import com.selimsahin.amadeus.models.Flight;
 import com.selimsahin.amadeus.repositories.FlightRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,24 +23,22 @@ public class FlightService {
     public FlightResponseDto createFlight(FlightCreateDto flightCreateDto) {
         Flight createdFlight = modelMapper.map(flightCreateDto, Flight.class);
         createdFlight = flightRepository.save(createdFlight);
-        // print createdFlight
-        System.out.println(createdFlight);
         return modelMapper.map(createdFlight, FlightResponseDto.class);
     }
 
     public Iterable<FlightResponseDto> getFlights() {
-        return flightRepository
-            .findAll()
-            .stream()
-            .map(flight -> modelMapper.map(flight, FlightResponseDto.class))
-            .toList();
+        List<Flight> flights = flightRepository.findAll();
+
+        return flights.stream()
+                .map(flight -> modelMapper.map(flight, FlightResponseDto.class))
+                .toList();
     }
 
     public FlightResponseDto getFlightById(Long id) {
         Optional<Flight> foundFlight = flightRepository.findById(id);
 
         if (foundFlight.isEmpty()) {
-            throw new RuntimeException("Flight not found");
+            throw new ResourceNotFoundException("Flight not found with id: " + id);
         }
 
         return modelMapper.map(foundFlight.get(), FlightResponseDto.class);
@@ -46,7 +48,7 @@ public class FlightService {
         Optional<Flight> foundFlight = flightRepository.findById(id);
 
         if (foundFlight.isEmpty()) {
-            return null;
+            throw new ResourceNotFoundException("Flight not found with id: " + id);
         }
 
         Flight flight = foundFlight.get();
@@ -61,6 +63,9 @@ public class FlightService {
     }
 
     public void deleteFlight(Long id) {
+        if (!flightRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Flight not found with id: " + id);
+        }
         flightRepository.deleteById(id);
     }
 }
