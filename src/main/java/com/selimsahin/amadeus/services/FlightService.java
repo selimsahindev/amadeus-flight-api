@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -94,5 +95,10 @@ public class FlightService {
             throw new ResourceNotFoundException("Flight not found with id: " + id);
         }
         return flight.get();
+    }
+
+    // This method is used to create flights in bulk for testing purposes.
+    public void storeFlightData(List<Flight> flights) {
+        flightRepository.saveAll(flights);
     }
 }

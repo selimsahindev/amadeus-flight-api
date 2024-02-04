@@ -3,12 +3,14 @@ package com.selimsahin.amadeus.dtos;
 import com.selimsahin.amadeus.models.Airport;
 import jakarta.persistence.Column;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class FlightCreateDto {
     @Column(nullable = false)
     private Long departureAirportId;

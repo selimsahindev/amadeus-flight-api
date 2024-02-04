@@ -7,7 +7,6 @@ import lombok.*;
 @Table(name = "airports")
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class Airport extends BaseModel {
     @Column(nullable = false)
     private String city;
