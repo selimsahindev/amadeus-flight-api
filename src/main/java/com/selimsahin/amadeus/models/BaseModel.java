@@ -19,10 +19,10 @@ public abstract class BaseModel {
     protected Long id;
 
     @Column(nullable = false, updatable = false)
-    @CreatedDate
+    @CreationTimestamp
     protected LocalDateTime createdAt;
 
     @Column(nullable = false)
-    @LastModifiedDate
+    @UpdateTimestamp
     protected LocalDateTime updatedAt;
 }
