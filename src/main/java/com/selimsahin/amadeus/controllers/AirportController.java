@@ -3,6 +3,8 @@ package com.selimsahin.amadeus.controllers;
 import com.selimsahin.amadeus.dtos.AirportCreateDto;
 import com.selimsahin.amadeus.dtos.AirportResponseDto;
 import com.selimsahin.amadeus.services.AirportService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/airports")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "basicAuth")
+@Tag(name = "Airport", description = "Operations related to airports")
 public class AirportController {
     private final AirportService airportService;
     private final ModelMapper modelMapper;

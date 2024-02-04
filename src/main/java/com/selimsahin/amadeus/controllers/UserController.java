@@ -2,6 +2,8 @@ package com.selimsahin.amadeus.controllers;
 
 import com.selimsahin.amadeus.models.User;
 import com.selimsahin.amadeus.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +18,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
+@SecurityRequirement(name = "basicAuth")
+@Tag(name = "User", description = "Operations related to users")
 public class UserController {
     private final UserService userService;
 

@@ -3,6 +3,8 @@ package com.selimsahin.amadeus.controllers;
 import com.selimsahin.amadeus.dtos.FlightCreateDto;
 import com.selimsahin.amadeus.dtos.FlightResponseDto;
 import com.selimsahin.amadeus.services.FlightService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/flights")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "basicAuth")
+@Tag(name = "Flight", description = "Operations related to flights")
 public class FlightController {
     private final FlightService flightService;
 
