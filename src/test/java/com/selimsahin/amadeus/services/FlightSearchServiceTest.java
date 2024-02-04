@@ -4,6 +4,8 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.selimsahin.amadeus.dtos.FlightResponseDto;
+import com.selimsahin.amadeus.dtos.FlightSearchResponseDto;
+import com.selimsahin.amadeus.models.Airport;
 import com.selimsahin.amadeus.repositories.AirportRepository;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import com.selimsahin.amadeus.models.Flight;
 import com.selimsahin.amadeus.repositories.FlightRepository;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,12 +70,16 @@ public class FlightSearchServiceTest {
         });
 
         // When
-        Iterable<FlightResponseDto> results = flightSearchService.searchFlights(criteria);
+        FlightSearchResponseDto results = flightSearchService.searchFlights(criteria);
 
         // Then
         assertNotNull(results);
-        List<FlightResponseDto> resultList = (List<FlightResponseDto>) results;
-        assertEquals(2, resultList.size()); // Assuming one departure and one return flight
+
+        // DEPARTURE FLIGHTS
+        assertNotNull(results.getDepartureFlights());
+        List<FlightResponseDto> resultList = results.getDepartureFlights();
+
+        assertEquals(1, resultList.size()); // Assuming one departure and one return flight
 
         // Asserting the properties of the first result as an example
         FlightResponseDto firstResult = resultList.get(0);
@@ -81,7 +88,19 @@ public class FlightSearchServiceTest {
 
         // Verify interactions
         verify(flightRepository).findFlightsByCriteria(1L, 2L, LocalDate.of(2024, 2, 20));
+
+        // RETURN FLIGHTS
+        assertNotNull(results.getReturnFlights());
+        resultList = results.getReturnFlights();
+
+        assertEquals(1, resultList.size()); // Assuming one departure and one return flight
+
+        // Asserting the properties of the first result as an example
+        firstResult = resultList.get(0);
+        assertEquals(LocalDate.of(2024, 2, 24), firstResult.getDepartureDate());
+        assertEquals(160.0, firstResult.getPrice());
+
+        // Verify interactions
         verify(flightRepository).findFlightsByCriteria(2L, 1L, LocalDate.of(2024, 2, 24));
-        verify(modelMapper, times(2)).map(any(Flight.class), eq(FlightResponseDto.class));
     }
 }
