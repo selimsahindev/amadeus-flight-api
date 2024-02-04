@@ -7,6 +7,7 @@ import com.selimsahin.amadeus.models.Airport;
 import com.selimsahin.amadeus.models.Flight;
 import com.selimsahin.amadeus.repositories.AirportRepository;
 import com.selimsahin.amadeus.repositories.FlightRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -36,49 +37,15 @@ public class FlightService {
                 .toList();
     }
 
-    public FlightResponseDto getFlightById(Long id) {
-        Optional<Flight> foundFlight = flightRepository.findById(id);
-
-        if (foundFlight.isEmpty()) {
-            throw new ResourceNotFoundException("Flight not found with id: " + id);
-        }
-
-        return modelMapper.map(foundFlight.get(), FlightResponseDto.class);
+    public FlightResponseDto findFlightById(Long id) {
+        Flight foundFlight = getFlightById(id);
+        return modelMapper.map(foundFlight, FlightResponseDto.class);
     }
 
+    @Transactional
     public FlightResponseDto updateFlight(Long id, FlightCreateDto flightCreateDto) {
-        Optional<Flight> flight = flightRepository.findById(id);
-        if (flight.isEmpty()) {
-            throw new ResourceNotFoundException("Flight not found with id: " + id);
-        }
-        Flight updatedFlight = flight.get();
-
-        if (flightCreateDto.getDepartureAirportId() != null) {
-            Optional<Airport> departureAirport = airportRepository.findById(flightCreateDto.getDepartureAirportId());
-            if (departureAirport.isEmpty()) {
-                throw new ResourceNotFoundException("Departure airport not found with id: " + flightCreateDto.getDepartureAirportId());
-            }
-            updatedFlight.setDepartureAirport(departureAirport.get());
-        }
-        if (flightCreateDto.getArrivalAirportId() != null) {
-            Optional<Airport> arrivalAirport = airportRepository.findById(flightCreateDto.getArrivalAirportId());
-            if (arrivalAirport.isEmpty()) {
-                throw new ResourceNotFoundException("Arrival airport not found with id: " + flightCreateDto.getArrivalAirportId());
-            }
-            updatedFlight.setArrivalAirport(arrivalAirport.get());
-        }
-        if (flightCreateDto.getDepartureDateTime() != null) {
-            updatedFlight.setDepartureDateTime(flightCreateDto.getDepartureDateTime());
-        }
-        if (flightCreateDto.getArrivalDateTime() != null) {
-            updatedFlight.setArrivalDateTime(flightCreateDto.getArrivalDateTime());
-        }
-        if (flightCreateDto.getPrice() != null) {
-            updatedFlight.setPrice(flightCreateDto.getPrice());
-        }
-
-        updatedFlight.setCreatedAt(updatedFlight.getCreatedAt());
-        updatedFlight.setUpdatedAt(LocalDateTime.now());
+        Flight updatedFlight = getFlightById(id);
+        updateFlightFromDto(updatedFlight, flightCreateDto);
 
         updatedFlight = flightRepository.save(updatedFlight);
         return modelMapper.map(updatedFlight, FlightResponseDto.class);
@@ -89,5 +56,43 @@ public class FlightService {
             throw new ResourceNotFoundException("Flight not found with id: " + id);
         }
         flightRepository.deleteById(id);
+    }
+
+    private Airport getAirportById(Long id) {
+        Optional<Airport> airport = airportRepository.findById(id);
+        if (airport.isEmpty()) {
+            throw new ResourceNotFoundException("Airport not found with id: " + id);
+        }
+        return airport.get();
+    }
+
+    private void updateFlightFromDto(Flight flight, FlightCreateDto flightCreateDto) {
+        if (flightCreateDto.getDepartureAirportId() != null) {
+            Airport departureAirport = getAirportById(flightCreateDto.getDepartureAirportId());
+            flight.setDepartureAirport(departureAirport);
+        }
+        if (flightCreateDto.getArrivalAirportId() != null) {
+            Airport arrivalAirport = getAirportById(flightCreateDto.getArrivalAirportId());
+            flight.setArrivalAirport(arrivalAirport);
+        }
+        if (flightCreateDto.getDepartureDateTime() != null) {
+            flight.setDepartureDateTime(flightCreateDto.getDepartureDateTime());
+        }
+        if (flightCreateDto.getArrivalDateTime() != null) {
+            flight.setArrivalDateTime(flightCreateDto.getArrivalDateTime());
+        }
+        if (flightCreateDto.getPrice() != null) {
+            flight.setPrice(flightCreateDto.getPrice());
+        }
+
+        flight.setUpdatedAt(LocalDateTime.now());
+    }
+
+    private Flight getFlightById(Long id) {
+        Optional<Flight> flight = flightRepository.findById(id);
+        if (flight.isEmpty()) {
+            throw new ResourceNotFoundException("Flight not found with id: " + id);
+        }
+        return flight.get();
     }
 }

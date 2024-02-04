@@ -6,6 +6,7 @@ import com.selimsahin.amadeus.services.FlightService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +23,7 @@ public class FlightController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FlightResponseDto> getFlightById(@PathVariable Long id) {
-        FlightResponseDto foundFlight = flightService.getFlightById(id);
+        FlightResponseDto foundFlight = flightService.findFlightById(id);
         return ResponseEntity.ok(foundFlight);
     }
 

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -17,10 +19,10 @@ public abstract class BaseModel {
     protected Long id;
 
     @Column(nullable = false, updatable = false)
-    @CreationTimestamp
+    @CreatedDate
     protected LocalDateTime createdAt;
 
     @Column(nullable = false)
-    @UpdateTimestamp
+    @LastModifiedDate
     protected LocalDateTime updatedAt;
 }
