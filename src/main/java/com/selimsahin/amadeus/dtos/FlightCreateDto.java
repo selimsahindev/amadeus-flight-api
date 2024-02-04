@@ -26,6 +26,4 @@ public class FlightCreateDto {
 
     @Column(nullable = false)
     private Double price;
-
-
 }

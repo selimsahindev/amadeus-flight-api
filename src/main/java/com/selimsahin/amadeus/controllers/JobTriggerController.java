@@ -8,20 +8,21 @@ import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/test")
+@RequestMapping("/api/v1/jobs")
 @RequiredArgsConstructor
 public class JobTriggerController {
     private final FlightDataService flightDataService;
     private final Scheduler scheduler;
     private final ModelMapper modelMapper;
 
-    @GetMapping("/get-data")
+    @GetMapping("/mock-data")
     public List<FlightResponseDto> getFlights() {
         return flightDataService.fetchMockFlightData()
                 .stream()
@@ -29,7 +30,7 @@ public class JobTriggerController {
                 .toList();
     }
 
-    @GetMapping("/trigger-job")
+    @PostMapping("/trigger")
     public String triggerJob() {
         JobKey jobKey = new JobKey("flightDataJob", "group1");
         try {

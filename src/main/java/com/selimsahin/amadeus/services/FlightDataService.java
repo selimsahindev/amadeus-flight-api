@@ -24,7 +24,7 @@ public class FlightDataService {
         List<Flight> flights = new ArrayList<>();
         Random random = new Random();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 50; i++) {
             Flight flight = new Flight();
 
             // Randomly select departure and arrival airports ensuring they are different
