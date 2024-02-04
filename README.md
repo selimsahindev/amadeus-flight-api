@@ -2,7 +2,7 @@
 This is the Backend (Java) Developer Case Assignment within the Future Talent Program of Amadeus & Coderspace.
 <br>
 <br>
-Author: <a href="https://github.com/selimsahindev">selimsahindev</a>
+Author: <a href="https://github.com/selimsahindev" target="_blank">selimsahindev</a>
 <br>
 <br>
 
@@ -10,15 +10,17 @@ Author: <a href="https://github.com/selimsahindev">selimsahindev</a>
 You need to run the project on your local environment first.
 <br>
 
-<a href="http://localhost:8080/swagger-ui/index.html">localhost:8080/swagger-ui/index.html</a>
+<a href="http://localhost:8080/swagger-ui/index.html" target="_blank"><strong>localhost:8080/swagger-ui/index.html</strong></a>
 <br>
 
-**Note:** Don't forget to set up a PostgreSQL server and seed your airports and flights using the `/api/v1/jobs/trigger` `[POST]` endpoint!
+Prepare your PostgreSQL server and then seed your airports and flights using the `/api/v1/jobs/trigger` `[POST]` endpoint!
 
 <br>
 
 ## You can also find the Postman documentation here!
-<a href="https://www.postman.com/selimsahindev/workspace/amadeus-flight-api/collection/9112554-c03fd498-a6e0-411c-9aea-91f1dc00b84b?action=share&creator=9112554"><strong>Run in Postman</strong></a> 🚀
+<a href="https://www.postman.com/selimsahindev/workspace/amadeus-flight-api/collection/9112554-c03fd498-a6e0-411c-9aea-91f1dc00b84b?action=share&creator=9112554" target="_blank"><strong>Run in Postman</strong></a> 🚀
+
+You will need to set up Basic Authentication in Postman before executing any requests. To do this, you should create an API user with appropriate credentials.
 
 <br>
 
