@@ -2,6 +2,7 @@ package com.selimsahin.amadeus.controllers;
 
 import com.selimsahin.amadeus.dtos.FlightResponseDto;
 import com.selimsahin.amadeus.dtos.FlightSearchCriteriaDto;
+import com.selimsahin.amadeus.dtos.FlightSearchResponseDto;
 import com.selimsahin.amadeus.services.FlightSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ public class FlightSearchController {
     private final FlightSearchService flightSearchService;
 
     @GetMapping
-    public ResponseEntity<Iterable<FlightResponseDto>> searchFlights(@ModelAttribute FlightSearchCriteriaDto searchCriteria) {
-        return ResponseEntity.ok(flightSearchService.searchFlights(searchCriteria));
+    public FlightSearchResponseDto searchFlights(@ModelAttribute FlightSearchCriteriaDto searchCriteria) {
+        return flightSearchService.searchFlights(searchCriteria);
     }
 }

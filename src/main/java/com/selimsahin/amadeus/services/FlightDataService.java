@@ -17,42 +17,41 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequiredArgsConstructor
 public class FlightDataService {
     private final AirportRepository airportRepository;
-    // Example list of airports (Ensure these exist in your database or are replaced with those that do)
-    private static final String[] airportCities = {"New York", "London", "Tokyo", "Paris", "Berlin", "Sydney", "Toronto", "Istanbul", "Dubai", "Singapore"};
+
+    private static final String[] airportCities = {
+        "New York", "London", "Tokyo", "Paris", "Berlin", "Sydney", "Toronto", "Istanbul", "Dubai", "Singapore",
+        "Los Angeles", "Rome", "Barcelona", "Amsterdam", "Moscow", "Beijing", "Shanghai", "Hong Kong", "Seoul", "Mumbai" };
 
     public List<Flight> fetchMockFlightData() {
         List<Flight> flights = new ArrayList<>();
         Random random = new Random();
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100_000; i++) {
             Flight flight = new Flight();
 
             // Randomly select departure and arrival airports ensuring they are different
             int departureIndex = random.nextInt(airportCities.length);
-            int arrivalIndex = departureIndex;
-            while (arrivalIndex == departureIndex) {
+            int arrivalIndex;
+            do {
                 arrivalIndex = random.nextInt(airportCities.length);
-            }
+            } while (arrivalIndex == departureIndex);
 
+            // Assign random from the array of airport cities
             flight.setDepartureAirport(findAirportByCityOrCreate(airportCities[departureIndex]));
             flight.setArrivalAirport(findAirportByCityOrCreate(airportCities[arrivalIndex]));
 
             // Generate random dates for departure and arrival ensuring logical consistency
             long minDay = LocalDate.now().toEpochDay();
-            long maxDay = LocalDate.now().plusMonths(6).toEpochDay(); // Assuming flights are within the next 6 months
+            long maxDay = LocalDate.now().plusMonths(6).toEpochDay();
             long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
             LocalDate departureDate = LocalDate.ofEpochDay(randomDay);
-            LocalDate arrivalDate = departureDate.plusDays(random.nextInt(2) + 1); // Arrival is 1-2 days after departure
+            LocalDate arrivalDate = departureDate.plusDays(random.nextBoolean() ? 1 : 0);
 
             flight.setDepartureDate(departureDate);
             flight.setArrivalDate(arrivalDate);
             flight.setCreatedAt(LocalDateTime.now());
             flight.setUpdatedAt(LocalDateTime.now());
-
-            // Set a random price
-            double price = 100 + (1000 - 100) * random.nextInt(); // Random price between 100 and 1000
-            flight.setPrice(price);
-
+            flight.setPrice((double) (random.nextInt(90) + 10) * 10);
             flights.add(flight);
         }
 

@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class FlightResponseDto {
+    private Long id;
+
     private Long departureAirportId;
     private Long arrivalAirportId;
     private LocalDate departureDate;

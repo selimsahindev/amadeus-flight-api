@@ -2,6 +2,7 @@ package com.selimsahin.amadeus.services;
 
 import com.selimsahin.amadeus.dtos.FlightResponseDto;
 import com.selimsahin.amadeus.dtos.FlightSearchCriteriaDto;
+import com.selimsahin.amadeus.dtos.FlightSearchResponseDto;
 import com.selimsahin.amadeus.exceptions.InvalidArgumentException;
 import com.selimsahin.amadeus.models.Flight;
 import com.selimsahin.amadeus.repositories.FlightRepository;
@@ -19,7 +20,7 @@ public class FlightSearchService {
     private final FlightRepository flightRepository;
     private final ModelMapper modelMapper;
 
-    public Iterable<FlightResponseDto> searchFlights(FlightSearchCriteriaDto searchCriteria) {
+    public FlightSearchResponseDto searchFlights(FlightSearchCriteriaDto searchCriteria) {
         // Validate the search criteria if needed.
         validateSearchCriteria(searchCriteria);
 
@@ -38,13 +39,25 @@ public class FlightSearchService {
             returnFlights = findFlights(arrivalAirportId, departureAirportId, returnDate);
         }
 
-        // Combine and map flights to DTOs
-        List<Flight> allFlights = combineFlights(departureFlights, returnFlights);
+        List<FlightResponseDto> departureFlightDtos = mapFlightsToDtos(departureFlights);
+        List<FlightResponseDto> returnFlightDtos = mapFlightsToDtos(returnFlights);
 
-        return allFlights.stream()
-                .map(flight -> modelMapper.map(flight, FlightResponseDto.class))
-                .toList();
+        return new FlightSearchResponseDto(departureFlightDtos, returnFlightDtos);
     }
+
+    private List<FlightResponseDto> mapFlightsToDtos(List<Flight> flights) {
+        if (flights == null) {
+            return null;
+        }
+
+        List<FlightResponseDto> flightDtos = new ArrayList<>();
+        for (Flight flight : flights) {
+            FlightResponseDto flightDto = modelMapper.map(flight, FlightResponseDto.class);
+            flightDtos.add(flightDto);
+        }
+        return flightDtos;
+    }
+
     private void validateSearchCriteria(FlightSearchCriteriaDto searchCriteria) {
         // Check for required fields
         if (searchCriteria.getDepartureAirportId() == null) {
