@@ -22,10 +22,8 @@ You need to run the project on your local environment first.
 
 <br>
 
------------
-<br>
 
-## Flight Search API
+# How to use?
 
 ### Description
 This API provides access to comprehensive flight data based on given parameters. It allows users to search for flights between specified departure and arrival airports on a given departure date. Optionally, users can also retrieve return flights for the same airports by providing a return date.
