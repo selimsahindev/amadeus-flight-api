@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "flights")
@@ -22,10 +22,10 @@ public class Flight extends BaseModel {
     private Airport arrivalAirport;
 
     @Column(nullable = false)
-    private LocalDateTime departureDateTime;
+    private LocalDate departureDate;
 
     @Column(nullable = false)
-    private LocalDateTime arrivalDateTime;
+    private LocalDate arrivalDate;
 
     @Column(nullable = false)
     private Double price;

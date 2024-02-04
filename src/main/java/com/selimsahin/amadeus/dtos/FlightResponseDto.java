@@ -1,22 +1,18 @@
 package com.selimsahin.amadeus.dtos;
 
-import com.selimsahin.amadeus.models.Airport;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class FlightResponseDto {
-    private Long id;
-
     private Long departureAirportId;
     private Long arrivalAirportId;
-    private LocalDateTime departureDateTime;
-    private LocalDateTime arrivalDateTime;
+    private LocalDate departureDate;
+    private LocalDate arrivalDate;
     private Double price;
 
     private LocalDateTime createdAt;

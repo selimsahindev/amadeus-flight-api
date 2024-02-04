@@ -75,11 +75,11 @@ public class FlightService {
             Airport arrivalAirport = getAirportById(flightCreateDto.getArrivalAirportId());
             flight.setArrivalAirport(arrivalAirport);
         }
-        if (flightCreateDto.getDepartureDateTime() != null) {
-            flight.setDepartureDateTime(flightCreateDto.getDepartureDateTime());
+        if (flightCreateDto.getDepartureDate() != null) {
+            flight.setDepartureDate(flightCreateDto.getDepartureDate());
         }
-        if (flightCreateDto.getArrivalDateTime() != null) {
-            flight.setArrivalDateTime(flightCreateDto.getArrivalDateTime());
+        if (flightCreateDto.getArrivalDate() != null) {
+            flight.setArrivalDate(flightCreateDto.getArrivalDate());
         }
         if (flightCreateDto.getPrice() != null) {
             flight.setPrice(flightCreateDto.getPrice());

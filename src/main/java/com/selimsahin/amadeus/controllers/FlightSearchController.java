@@ -14,7 +14,7 @@ public class FlightSearchController {
     private final FlightSearchService flightSearchService;
 
     @GetMapping
-    public ResponseEntity<Iterable<FlightResponseDto>> searchFlights(@RequestParam FlightSearchCriteriaDto searchCriteria) {
+    public ResponseEntity<Iterable<FlightResponseDto>> searchFlights(@ModelAttribute FlightSearchCriteriaDto searchCriteria) {
         return ResponseEntity.ok(flightSearchService.searchFlights(searchCriteria));
     }
 }

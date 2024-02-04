@@ -5,7 +5,7 @@ import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -17,10 +17,10 @@ public class FlightCreateDto {
     private Long arrivalAirportId;
 
     @Column(nullable = false)
-    private LocalDateTime departureDateTime;
+    private LocalDate departureDate;
 
     @Column(nullable = false)
-    private LocalDateTime arrivalDateTime;
+    private LocalDate arrivalDate;
 
     @Column(nullable = false)
     private Double price;
